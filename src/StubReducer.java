@@ -17,30 +17,30 @@ public class StubReducer extends Reducer<LongWritable, Text, LongWritable, Text>
         final HashMap<Long, List<Long>> commonFriendsMap = new HashMap<Long, List<Long>>();
 
         for (Text val : values) {
-        	final String valInp = val.toString();
-        	final long user = Long.parseLong(valInp.split(",")[0]);
-        	final long commonFriend = Long.parseLong(valInp.split(",")[1]);
+	        	final String valInp = val.toString();
+	        	final long user = Long.parseLong(valInp.split(",")[0]);
+	        	final long commonFriend = Long.parseLong(valInp.split(",")[1]);
             final Boolean checkFriendFlag;
             if(commonFriend == -1){
-            	checkFriendFlag = true;
+            		checkFriendFlag = true;
             }
             else{
-            	checkFriendFlag = false;
+            		checkFriendFlag = false;
             }
-
+	
             if (commonFriendsMap.containsKey(user)) {
                 if (checkFriendFlag) {
-                    commonFriendsMap.put(user, null);
+                		commonFriendsMap.put(user, null);
                 } 
                 else if (commonFriendsMap.get(user) != null) {
-                	List<Long> tempList = commonFriendsMap.get(user);
-                	tempList.add(commonFriend);
+	                	List<Long> tempList = commonFriendsMap.get(user);
+	                	tempList.add(commonFriend);
                 }
             } 
             else {
                 if (!checkFriendFlag) {
-                	ArrayList<Long> temp = new ArrayList<Long>();
-                	temp.add(commonFriend);
+	                ArrayList<Long> temp = new ArrayList<Long>();
+	                temp.add(commonFriend);
                     commonFriendsMap.put(user, temp);
                 } 
                 else {
@@ -75,12 +75,9 @@ public class StubReducer extends Reducer<LongWritable, Text, LongWritable, Text>
             }
         }
 
-        int counter = 0; String output = "";
+        String output = "";
         for (Map.Entry<Long, List<Long>> entry : sortedcommonFriendsMap.entrySet()) {
-        		if(counter == 10)
-        			break;
             output += entry.getKey().toString() + ",";
-            counter++;
         }
         ctx.write(key, new Text(output));
     }
